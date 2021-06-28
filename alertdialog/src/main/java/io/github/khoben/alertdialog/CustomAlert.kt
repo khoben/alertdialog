@@ -72,6 +72,8 @@ object CustomAlert {
                     putString(EXTRA_POSITIVE_TEXT, positiveText)
                     putString(EXTRA_NEGATIVE_TEXT, negativeText)
                     putString(EXTRA_NEUTRAL_TEXT, neutralText)
+
+                    putInt(EXTRA_DIALOG_STYLE, dialogStyle)
                 }
             }
         }
