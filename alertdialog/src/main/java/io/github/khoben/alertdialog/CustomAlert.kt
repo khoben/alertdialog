@@ -25,22 +25,37 @@ object CustomAlert {
 
         private var dialogStyle: Int = DEFAULT_STYLE
 
+        /**
+         * Set dialog style res
+         */
         fun setDialogStyle(@StyleRes dialogStyle: Int) = apply {
             this.dialogStyle = dialogStyle
         }
 
+        /**
+         * Enable positive button with [buttonText] text
+         */
         fun enablePositive(buttonText: String) = apply {
             positiveText = buttonText
         }
 
+        /**
+         * Enable negative button with [buttonText] text
+         */
         fun enableNegative(buttonText: String) = apply {
             negativeText = buttonText
         }
 
+        /**
+         * Enable neutral button with [buttonText] text
+         */
         fun enableNeutral(buttonText: String) = apply {
             neutralText = buttonText
         }
 
+        /**
+         * Create instance of [CustomAlertDialog]
+         */
         fun build(): CustomAlertDialog {
             return CustomAlertDialog().apply {
                 arguments = Bundle().apply {
@@ -58,12 +73,21 @@ object CustomAlert {
         }
     }
 
+    /**
+     * Create custom alert dialog with three possible action buttons:
+     *  1. Positive ([Builder.enablePositive])
+     *  2. Negative ([Builder.enableNegative])
+     *  3. Neutral ([Builder.enableNeutral])
+     */
     fun custom(
         tag: String? = null,
         title: CharSequence,
         body: CharSequence,
     ) = Builder(tag, title, body)
 
+    /**
+     * Create simple alert dialog with single ok button that dismisses it
+     */
     fun simple(
         title: CharSequence,
         body: CharSequence,

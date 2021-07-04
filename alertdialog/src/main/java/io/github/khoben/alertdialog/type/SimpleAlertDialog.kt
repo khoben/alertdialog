@@ -9,7 +9,7 @@ import io.github.khoben.alertdialog.Const
 /**
  * Simple alert dialog with single positive button that dismisses it
  */
-class SimpleAlertDialog : DialogFragment() {
+class SimpleAlertDialog : BaseAlertDialog() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val title = arguments?.getCharSequence(Const.EXTRA_TITLE, "")
@@ -25,6 +25,9 @@ class SimpleAlertDialog : DialogFragment() {
                 dismissAllowingStateLoss()
             }.create()
     }
+
+    override val DIALOG_TAG: String
+        get() = TAG
 
     companion object {
         val TAG: String = SimpleAlertDialog::class.java.simpleName

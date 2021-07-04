@@ -7,27 +7,30 @@ import androidx.appcompat.app.AppCompatActivity
 import io.github.khoben.alertdialog.CustomAlert
 import io.github.khoben.alertdialog.CustomDialogEventListener
 import io.github.khoben.alertdialog.event.DialogEvent
-import io.github.khoben.alertdialog.postConfig
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), CustomDialogEventListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         findViewById<Button>(R.id.simple_dialog).setOnClickListener {
-            CustomAlert.simple("Hi", "How do you do?")
-                .postConfig {
-                    isCancelable = false
-                }.show(supportFragmentManager, "Test")
+            CustomAlert.simple(
+                title = "Hi",
+                body = "How do you do?",
+                dialogStyle = R.style.MaterialAlertDialog_MaterialComponents
+            ).cancelable(false)
+                .show(this)
         }
         findViewById<Button>(R.id.custom_dialog).setOnClickListener {
-            CustomAlert.custom(SAMPLE_DIALOG_TAG, "Hi", "How do you do?")
-                .setDialogStyle(R.style.MaterialAlertDialog_MaterialComponents)
+            CustomAlert.custom(
+                tag = SAMPLE_DIALOG_TAG,
+                title = "Hi",
+                body = "How do you do?"
+            ).setDialogStyle(R.style.MaterialAlertDialog_MaterialComponents)
                 .enablePositive("+")
                 .enableNeutral("=")
                 .enableNegative("-")
                 .build()
-                .postConfig {
-                    isCancelable = false
-                }.show(supportFragmentManager, "Test")
+                .cancelable(false)
+                .show(this)
         }
     }
 

@@ -3,7 +3,6 @@ package io.github.khoben.alertdialog.type
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.khoben.alertdialog.Const
 import io.github.khoben.alertdialog.CustomDialogEventListener
@@ -14,7 +13,7 @@ import io.github.khoben.alertdialog.event.DialogEvent
  *
  * Parent should implement CustomDialogEventListener
  */
-class CustomAlertDialog : DialogFragment() {
+class CustomAlertDialog : BaseAlertDialog() {
 
     private var listener: CustomDialogEventListener? = null
 
@@ -60,6 +59,9 @@ class CustomAlertDialog : DialogFragment() {
             }
             .create()
     }
+
+    override val DIALOG_TAG: String
+        get() = TAG
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
