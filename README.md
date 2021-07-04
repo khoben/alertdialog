@@ -6,7 +6,7 @@
 
 ```kotlin
 CustomAlert.simple("Hi", "How do you do?")
-                .show(supportFragmentManager, "Test")
+                .show(this)
 ```
 
 <p align="center"><img src="./Readme.md-images/1.png"></p>
@@ -14,12 +14,18 @@ CustomAlert.simple("Hi", "How do you do?")
 #### Custom alert dialog
 
 ```kotlin
-CustomAlert.custom("SAMPLE_DIALOG_TAG", "Hi", "How do you do?")
+private val SAMPLE_DIALOG_TAG = "SAMPLE_DIALOG_TAG"
+
+...
+
+CustomAlert.custom(SAMPLE_DIALOG_TAG, "Hi", "How do you do?")
     .enablePositive("+")
     .enableNeutral("=")
     .enableNegative("-")
+    .setDialogStyle(R.style.yourDialogStyle)
     .build()
-    .show(supportFragmentManager, "SAMPLE_DIALOG_TAG")
+    .cancelable(false)
+    .show(this)
 ```
 <p align="center"><img src="./Readme.md-images/2.png"></p>
 
