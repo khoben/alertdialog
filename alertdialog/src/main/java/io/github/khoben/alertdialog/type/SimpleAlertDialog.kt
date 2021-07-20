@@ -2,7 +2,6 @@ package io.github.khoben.alertdialog.type
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.khoben.alertdialog.Const
 
@@ -18,6 +17,7 @@ class SimpleAlertDialog : BaseAlertDialog() {
             arguments?.getInt(Const.EXTRA_DIALOG_STYLE, Const.DEFAULT_STYLE)!!
 
         return MaterialAlertDialogBuilder(requireContext(), dialogStyle)
+            .setView(dialogView)
             .setTitle(title)
             .setCancelable(false)
             .setMessage(body)

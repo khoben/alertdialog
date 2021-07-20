@@ -14,9 +14,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), CustomDialogEven
         findViewById<Button>(R.id.simple_dialog).setOnClickListener {
             CustomAlert.simple(
                 title = "Hi",
-                body = "How do you do?",
-                dialogStyle = R.style.MaterialAlertDialog_MaterialComponents
-            ).cancelable(false)
+                body = "How do you do?"
+            ).setDialogStyle(R.style.MaterialAlertDialog_MaterialComponents)
+                .withHeader(R.layout.dialog_header)
+                .build()
+                .cancelable(false)
                 .show(this)
         }
         findViewById<Button>(R.id.custom_dialog).setOnClickListener {
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), CustomDialogEven
                 .enablePositive("+")
                 .enableNeutral("=")
                 .enableNegative("-")
+                .withHeader(R.layout.dialog_header)
                 .build()
                 .cancelable(false)
                 .show(this)

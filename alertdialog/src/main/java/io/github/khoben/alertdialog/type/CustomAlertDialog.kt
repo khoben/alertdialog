@@ -34,6 +34,7 @@ class CustomAlertDialog : BaseAlertDialog() {
             )!!
 
         return MaterialAlertDialogBuilder(requireContext(), dialogStyle)
+            .setView(dialogView)
             .setTitle(title)
             .setMessage(body)
             .setCancelable(false)
@@ -41,19 +42,37 @@ class CustomAlertDialog : BaseAlertDialog() {
                 positiveText?.let { text ->
                     builder.setPositiveButton(text) { _, _ ->
                         dismissAllowingStateLoss()
-                        dialogTag?.let { listener?.onPositiveClickEvent(DialogEvent.PositiveButtonEvent(it)) }
+                        dialogTag?.let {
+                            listener?.onPositiveClickEvent(
+                                DialogEvent.PositiveButtonEvent(
+                                    it
+                                )
+                            )
+                        }
                     }
                 }
                 negativeText?.let { text ->
                     builder.setNegativeButton(text) { _, _ ->
                         dismissAllowingStateLoss()
-                        dialogTag?.let { listener?.onNegativeClickEvent(DialogEvent.NegativeButtonEvent(it)) }
+                        dialogTag?.let {
+                            listener?.onNegativeClickEvent(
+                                DialogEvent.NegativeButtonEvent(
+                                    it
+                                )
+                            )
+                        }
                     }
                 }
                 neutralText?.let { text ->
                     builder.setNeutralButton(text) { _, _ ->
                         dismissAllowingStateLoss()
-                        dialogTag?.let { listener?.onNeutralClickEvent(DialogEvent.NeutralButtonEvent(it)) }
+                        dialogTag?.let {
+                            listener?.onNeutralClickEvent(
+                                DialogEvent.NeutralButtonEvent(
+                                    it
+                                )
+                            )
+                        }
                     }
                 }
             }
