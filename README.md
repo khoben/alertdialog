@@ -6,10 +6,20 @@
 
 ```kotlin
 CustomAlert.simple("Hi", "How do you do?")
+                .withHeader(R.layout.dialog_header)
+                .build()
                 .show(this)
 ```
 
-<p align="center"><img src="./Readme.md-images/1.png"></p>
+<table>
+    <td>
+        <p align="center"><img src="./Readme.md-images/1.png"> <br>Simple</p>
+    </td>
+     <td>
+        <p align="center"><img src="./Readme.md-images/3.png"><br>With header</p>
+    </td>
+</table>
+
 
 #### Custom alert dialog
 
