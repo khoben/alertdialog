@@ -20,12 +20,15 @@ class CustomAlertDialog : BaseAlertDialog() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialogTag = arguments?.getString(Const.EXTRA_DIALOG_TAG, null)
 
-        val title = arguments?.getCharSequence(Const.EXTRA_TITLE, "")
-        val body = arguments?.getCharSequence(Const.EXTRA_BODY, "")
+        val title = arguments?.getCharSequence(Const.EXTRA_TITLE, null)
+        val message = arguments?.getCharSequence(Const.EXTRA_MESSAGE, null)
 
         val positiveText = arguments?.getString(Const.EXTRA_POSITIVE_TEXT, null)
         val negativeText = arguments?.getString(Const.EXTRA_NEGATIVE_TEXT, null)
         val neutralText = arguments?.getString(Const.EXTRA_NEUTRAL_TEXT, null)
+
+        val dialogIsCancellable = arguments?.getBoolean(Const.EXTRA_CANCELLABLE, true)!!
+        isCancelable = dialogIsCancellable
 
         val dialogStyle =
             arguments?.getInt(
@@ -35,9 +38,11 @@ class CustomAlertDialog : BaseAlertDialog() {
 
         return MaterialAlertDialogBuilder(requireContext(), dialogStyle)
             .setView(dialogView)
-            .setTitle(title)
-            .setMessage(body)
-            .setCancelable(false)
+            .apply {
+                if (title != null) setTitle(title)
+                if (message != null) setMessage(message)
+            }
+            .setCancelable(dialogIsCancellable)
             .also { builder ->
                 positiveText?.let { text ->
                     builder.setPositiveButton(text) { _, _ ->

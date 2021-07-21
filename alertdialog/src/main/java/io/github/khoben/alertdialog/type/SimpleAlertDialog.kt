@@ -11,19 +11,25 @@ import io.github.khoben.alertdialog.Const
 class SimpleAlertDialog : BaseAlertDialog() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val title = arguments?.getCharSequence(Const.EXTRA_TITLE, "")
-        val body = arguments?.getCharSequence(Const.EXTRA_BODY, "")
+        val title = arguments?.getCharSequence(Const.EXTRA_TITLE, null)
+        val message = arguments?.getCharSequence(Const.EXTRA_MESSAGE, null)
         val dialogStyle =
             arguments?.getInt(Const.EXTRA_DIALOG_STYLE, Const.DEFAULT_STYLE)!!
 
+        val dialogIsCancellable = arguments?.getBoolean(Const.EXTRA_CANCELLABLE, true)!!
+        isCancelable = dialogIsCancellable
+
         return MaterialAlertDialogBuilder(requireContext(), dialogStyle)
             .setView(dialogView)
-            .setTitle(title)
-            .setCancelable(false)
-            .setMessage(body)
+            .apply {
+                if (title != null) setTitle(title)
+                if (message != null) setMessage(message)
+            }
+            .setCancelable(dialogIsCancellable)
             .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
                 dismissAllowingStateLoss()
-            }.create()
+            }
+            .create()
     }
 
     override val DIALOG_TAG: String

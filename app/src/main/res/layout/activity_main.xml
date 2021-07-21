@@ -19,7 +19,7 @@
 
     <Button
         android:id="@+id/custom_dialog"
-        android:text="custom"
+        android:text="with callback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
