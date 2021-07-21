@@ -1,16 +1,28 @@
-## AlertDialog - Custom alert dialog with retained callback action
+## AlertDialog - Customizable alert dialog with retained callback action
+
+#### [Sample app](app/src/main/java/io/github/khoben/alertdialog/sample/MainActivity.kt)
 
 ### Usage
-
-#### Simple alert dialog (single ok button)
-
 ```kotlin
-CustomAlert.simple("Hi", "How do you do?")
-                .withHeader(R.layout.dialog_header)
-                .build()
-                .show(this)
-```
+private val SAMPLE_DIALOG_TAG = "SAMPLE_DIALOG_TAG"
 
+...
+
+Alert.create()
+    .title("Hi")
+    .message("How do you do?")
+    .style(R.style.MaterialAlertDialog_MaterialComponents)
+    .withButtonCallback(dialogTag = SAMPLE_DIALOG_TAG) // enable button callback
+    .positiveButton("+")    // add button with callback
+    .neutralButton("=")     // add button with callback
+    .negativeButton("-")    // add button with callback
+    .header(R.layout.dialog_header)
+    .cancellable(false)
+    .buttonsCentered()  // makes button layout centered
+    .titleAlignment(LayoutAlign.CENTER)
+    .messageAlignment(LayoutAlign.CENTER)
+    .show(this)
+```
 <table>
     <td>
         <p align="center"><img src="./Readme.md-images/1.png"> <br>Simple</p>
@@ -18,30 +30,14 @@ CustomAlert.simple("Hi", "How do you do?")
      <td>
         <p align="center"><img src="./Readme.md-images/3.png"><br>With header</p>
     </td>
+     <td>
+        <p align="center"><img src="./Readme.md-images/4.png"><br>Full equipment</p>
+    </td>
 </table>
-
-
-#### Custom alert dialog
-
-```kotlin
-private val SAMPLE_DIALOG_TAG = "SAMPLE_DIALOG_TAG"
-
-...
-
-CustomAlert.custom(SAMPLE_DIALOG_TAG, "Hi", "How do you do?")
-    .enablePositive("+")
-    .enableNeutral("=")
-    .enableNegative("-")
-    .setDialogStyle(R.style.yourDialogStyle)
-    .build()
-    .cancelable(false)
-    .show(this)
-```
-<p align="center"><img src="./Readme.md-images/2.png"></p>
 
 Listen alert dialog button click events:
 ```kotlin
-// For listent events implement CustomDialogEventListener
+// Implement CustomDialogEventListener to catch button click events from alert dialog buttons
 class MainActivity : AppCompatActivity(R.layout.activity_main), 
 CustomDialogEventListener {
 
@@ -93,4 +89,3 @@ CustomDialogEventListener {
     }
     ```
 
-### [Sample app](app/src/main/java/io/github/khoben/alertdialog/sample/MainActivity.kt)
