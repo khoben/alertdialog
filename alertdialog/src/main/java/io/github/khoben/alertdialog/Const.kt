@@ -7,7 +7,7 @@ internal object Const {
     @StyleRes
     val DEFAULT_STYLE = R.style.MaterialAlertDialog_MaterialComponents
 
-    @StyleRes
+    @LayoutAlign
     val DEFAULT_ALIGN = LayoutAlign.LEFT
 
     const val EXTRA_DIALOG_TAG = "extra_tag_dialog"
@@ -34,6 +34,7 @@ internal object Const {
 @IntDef(
     LayoutAlign.LEFT, LayoutAlign.RIGHT, LayoutAlign.CENTER
 )
+@Retention(AnnotationRetention.SOURCE)
 annotation class LayoutAlign {
     companion object {
         const val LEFT = 0

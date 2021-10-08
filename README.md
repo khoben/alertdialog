@@ -1,8 +1,21 @@
-## AlertDialog - Customizable alert dialog with retained callback action
+## AlertDialog - Customizable alert dialog with retained callback actions
 
 #### [Sample app](app/src/main/java/io/github/khoben/alertdialog/sample/MainActivity.kt)
 
 ### Usage
+#### Setup default alert dialog params
+
+Should be called once at Application.OnCreate() or smth:
+```kotlin
+Alert.defaultConfig {
+   dialogStyle = R.style.MaterialAlertDialog_MaterialComponents
+   headerLayoutResource = R.layout.dialog_header
+   footerLayoutResource = R.layout.dialog_footer
+   dialogIsCancellable = false
+}
+```
+#### Create AlertDialog
+
 ```kotlin
 private val SAMPLE_DIALOG_TAG = "SAMPLE_DIALOG_TAG"
 

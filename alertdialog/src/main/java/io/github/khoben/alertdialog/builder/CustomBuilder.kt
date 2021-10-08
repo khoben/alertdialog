@@ -2,6 +2,7 @@ package io.github.khoben.alertdialog.builder
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentManager
+import io.github.khoben.alertdialog.DialogConfig
 import io.github.khoben.alertdialog.Const
 import io.github.khoben.alertdialog.CustomDialogEventListener
 import io.github.khoben.alertdialog.type.CustomAlertDialog
@@ -43,38 +44,38 @@ class CustomBuilder internal constructor(
         neutralText = neutralBtnText
     }
 
-    internal fun copyFrom(builder: BaseBuilder) = apply {
-        headerLayoutResource = builder.headerLayoutResource
-        footerLayoutResource = builder.footerLayoutResource
-        dialogTitle = builder.dialogTitle
-        dialogMessage = builder.dialogMessage
-        dialogStyle = builder.dialogStyle
-        dialogTitleAlign = builder.dialogTitleAlign
-        dialogMessageAlign = builder.dialogMessageAlign
-        dialogButtonsIsCentered = builder.dialogButtonsIsCentered
-        dialogIsCancellable = builder.dialogIsCancellable
+    internal fun copyFrom(_config: DialogConfig) = apply {
+        config.headerLayoutResource = _config.headerLayoutResource
+        config.footerLayoutResource = _config.footerLayoutResource
+        config.dialogTitle = _config.dialogTitle
+        config.dialogMessage = _config.dialogMessage
+        config.dialogStyle = _config.dialogStyle
+        config.dialogTitleAlign = _config.dialogTitleAlign
+        config.dialogMessageAlign = _config.dialogMessageAlign
+        config.dialogButtonsIsCentered = _config.dialogButtonsIsCentered
+        config.dialogIsCancellable = _config.dialogIsCancellable
     }
 
     override fun showInternal(fragmentManager: FragmentManager): CustomAlertDialog {
         return CustomAlertDialog().apply {
             arguments = Bundle().apply {
-                putCharSequence(Const.EXTRA_TITLE, dialogTitle)
-                putCharSequence(Const.EXTRA_MESSAGE, dialogMessage)
+                putCharSequence(Const.EXTRA_TITLE, config.dialogTitle)
+                putCharSequence(Const.EXTRA_MESSAGE, config.dialogMessage)
                 putString(Const.EXTRA_DIALOG_TAG, dialogTag)
 
                 putString(Const.EXTRA_POSITIVE_TEXT, positiveText)
                 putString(Const.EXTRA_NEGATIVE_TEXT, negativeText)
                 putString(Const.EXTRA_NEUTRAL_TEXT, neutralText)
 
-                putInt(Const.EXTRA_HEADER_LAYOUT_RES, headerLayoutResource)
-                putInt(Const.EXTRA_FOOTER_LAYOUT_RES, footerLayoutResource)
+                putInt(Const.EXTRA_HEADER_LAYOUT_RES, config.headerLayoutResource)
+                putInt(Const.EXTRA_FOOTER_LAYOUT_RES, config.footerLayoutResource)
 
-                putInt(Const.EXTRA_DIALOG_STYLE, dialogStyle)
-                putBoolean(Const.EXTRA_CANCELLABLE, dialogIsCancellable)
+                putInt(Const.EXTRA_DIALOG_STYLE, config.dialogStyle)
+                putBoolean(Const.EXTRA_CANCELLABLE, config.dialogIsCancellable)
 
-                putBoolean(Const.EXTRA_BUTTONS_CENTERED, dialogButtonsIsCentered)
-                putInt(Const.EXTRA_TITLE_ALIGN, dialogTitleAlign)
-                putInt(Const.EXTRA_MESSAGE_ALIGN, dialogMessageAlign)
+                putBoolean(Const.EXTRA_BUTTONS_CENTERED, config.dialogButtonsIsCentered)
+                putInt(Const.EXTRA_TITLE_ALIGN, config.dialogTitleAlign)
+                putInt(Const.EXTRA_MESSAGE_ALIGN, config.dialogMessageAlign)
             }
         }.also {
             it.show(fragmentManager, it.DIALOG_TAG)

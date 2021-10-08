@@ -7,53 +7,46 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import io.github.khoben.alertdialog.Const
+import io.github.khoben.alertdialog.DialogConfig
 import io.github.khoben.alertdialog.LayoutAlign
 
-abstract class BaseBuilder {
-    internal var headerLayoutResource: Int = -1
-    internal var footerLayoutResource: Int = -1
-    internal var dialogTitle: CharSequence? = null
-    internal var dialogMessage: CharSequence? = null
-    internal var dialogStyle: Int = Const.DEFAULT_STYLE
-    internal var dialogTitleAlign: Int = Const.DEFAULT_ALIGN
-    internal var dialogMessageAlign: Int = Const.DEFAULT_ALIGN
-    internal var dialogButtonsIsCentered = false
-    internal var dialogIsCancellable = true
+abstract class BaseBuilder internal constructor(defaultConfig: DialogConfig? = null) {
+
+    protected val config = defaultConfig?: DialogConfig()
 
     /**
      * Set alert dialog title
      */
     fun title(title: CharSequence) = apply {
-        dialogTitle = title
+        config.dialogTitle = title
     }
 
     /**
      * Set alert dialog message
      */
     fun message(message: CharSequence) = apply {
-        dialogMessage = message
+        config.dialogMessage = message
     }
 
     /**
      * Set header layout for alertdialog, it will be placed above title
      */
     fun header(@LayoutRes headerLayoutRes: Int) = apply {
-        headerLayoutResource = headerLayoutRes
+        config.headerLayoutResource = headerLayoutRes
     }
 
     /**
      * Set footer layout for alertdialog, it will be placed below button row
      */
     fun footer(@LayoutRes footerLayoutRes: Int) = apply {
-        footerLayoutResource = footerLayoutRes
+        config.footerLayoutResource = footerLayoutRes
     }
 
     /**
      * Make button's layout centered
      */
     fun buttonsCentered() = apply {
-        dialogButtonsIsCentered = true
+        config.dialogButtonsIsCentered = true
     }
 
     /**
@@ -61,7 +54,7 @@ abstract class BaseBuilder {
      */
     @RequiresApi(android.os.Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun titleAlignment(@LayoutAlign alignment: Int) = apply {
-        dialogTitleAlign = alignment
+        config.dialogTitleAlign = alignment
     }
 
     /**
@@ -69,21 +62,21 @@ abstract class BaseBuilder {
      */
     @RequiresApi(android.os.Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun messageAlignment(@LayoutAlign alignment: Int) = apply {
-        dialogMessageAlign = alignment
+        config.dialogMessageAlign = alignment
     }
 
     /**
      * Set dialog style res
      */
     fun style(@StyleRes dialogStyle: Int) = apply {
-        this.dialogStyle = dialogStyle
+        config.dialogStyle = dialogStyle
     }
 
     /**
      * Set alert dialog cancellable or not
      */
     fun cancellable(isCancellable: Boolean) = apply {
-        dialogIsCancellable = isCancellable
+        config.dialogIsCancellable = isCancellable
     }
 
     /**
@@ -96,7 +89,7 @@ abstract class BaseBuilder {
      *  @param dialogTag Alert dialog callback tag
      */
     fun withButtonCallback(dialogTag: String? = null): CustomBuilder {
-        return CustomBuilder(dialogTag).copyFrom(this)
+        return CustomBuilder(dialogTag).copyFrom(config)
     }
 
     /**
