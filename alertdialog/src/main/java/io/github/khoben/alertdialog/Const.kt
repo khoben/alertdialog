@@ -5,7 +5,7 @@ import androidx.annotation.StyleRes
 
 internal object Const {
     @StyleRes
-    val DEFAULT_STYLE = R.style.MaterialAlertDialog_MaterialComponents
+    val DEFAULT_STYLE = R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog
 
     @LayoutAlign
     val DEFAULT_ALIGN = LayoutAlign.LEFT

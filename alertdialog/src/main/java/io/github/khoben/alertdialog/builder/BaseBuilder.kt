@@ -66,7 +66,12 @@ abstract class BaseBuilder internal constructor(defaultConfig: DialogConfig? = n
     }
 
     /**
-     * Set dialog style res
+     * Set dialog style, [dialogStyle] must be inherited from
+     * `ThemeOverlay.MaterialComponents.MaterialAlertDialog`:
+     *
+     * ```xml
+     * <style name="MyDialogStyle" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog"/>
+     * ```
      */
     fun style(@StyleRes dialogStyle: Int) = apply {
         config.dialogStyle = dialogStyle
