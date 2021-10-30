@@ -12,7 +12,7 @@ import io.github.khoben.alertdialog.LayoutAlign
 
 abstract class BaseBuilder internal constructor(defaultConfig: DialogConfig? = null) {
 
-    protected val config = defaultConfig?: DialogConfig()
+    protected val config = defaultConfig?.copy() ?: DialogConfig()
 
     /**
      * Set alert dialog title
