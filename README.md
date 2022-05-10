@@ -3,7 +3,7 @@
 #### [Sample app](app/src/main/java/io/github/khoben/alertdialog/sample/MainActivity.kt)
 
 ### Usage
-#### Setup default alert dialog params
+#### Setup alert dialog config (optional)
 
 Should be called once at Application.OnCreate() or smth:
 ```kotlin
@@ -21,20 +21,26 @@ private val SAMPLE_DIALOG_TAG = "SAMPLE_DIALOG_TAG"
 
 ...
 
-Alert.create()
-    .title("Hi")
-    .message("How do you do?")
-    .style(R.style.MaterialAlertDialog_MaterialComponents)
-    .withButtonCallback(dialogTag = SAMPLE_DIALOG_TAG) // enable button callback
-    .positiveButton("+")    // add button with callback
-    .neutralButton("=")     // add button with callback
-    .negativeButton("-")    // add button with callback
-    .header(R.layout.dialog_header)
-    .cancellable(false)
-    .buttonsCentered()  // makes button layout centered
-    .titleAlignment(LayoutAlign.CENTER)
-    .messageAlignment(LayoutAlign.CENTER)
-    .show(this)
+alert { // build and show alert
+    style(R.style.MaterialAlertDialog_MaterialComponents)
+    header(R.layout.dialog_header)
+    footer(R.layout.dialog_footer)
+    title { 
+        text("Hi")
+        alignment(LayoutAlign.RIGHT)
+    }
+    message {
+        text("How do you do?")
+        alignment(LayoutAlign.RIGHT)
+    }
+    controlsAlignCenter(true) // make button layout centered
+    buttonCallback(callbackTag = SAMPLE_DIALOG_TAG) { // enable callback
+        positiveButton("Yes")
+        neutralButton("Cancel")
+        negativeButton("No")
+    }
+    cancellable(false)
+}
 ```
 <table>
     <td>
@@ -50,34 +56,25 @@ Alert.create()
 
 Listen alert dialog button click events:
 ```kotlin
-// Implement CustomDialogEventListener to catch button click events from alert dialog buttons
+// Implement AlertEventListener to catch button click events from alert dialog buttons
 class MainActivity : AppCompatActivity(R.layout.activity_main), 
-CustomDialogEventListener {
+AlertEventListener {
 
     ...
 
-    // from CustomDialogEventListener
-    override fun onNegativeClickEvent(event: DialogEvent.NegativeButtonEvent) {
-        event.doIfTagMatches(SAMPLE_DIALOG_TAG) {
-            Toast.makeText(this, "${event.dialogTag} onNegativeClickEvent", Toast.LENGTH_SHORT)
-                .show()
-        }
+    // from AlertEventListener
+    override fun onAlertNegativeClick(event: AlertEvent.NegativeButtonEvent) {
+        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onNegativeClick") }
     }
 
-    // from CustomDialogEventListener
-    override fun onNeutralClickEvent(event: DialogEvent.NeutralButtonEvent) {
-        event.doIfTagMatches(SAMPLE_DIALOG_TAG) {
-            Toast.makeText(this, "${event.dialogTag} onNeutralClickEvent", Toast.LENGTH_SHORT)
-                .show()
-        }
+    // from AlertEventListener
+    override fun onAlertNeutralClick(event: AlertEvent.NeutralButtonEvent) {
+        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onNeutralClick") }
     }
 
-    // from CustomDialogEventListener
-    override fun onPositiveClickEvent(event: DialogEvent.PositiveButtonEvent) {
-        event.doIfTagMatches(SAMPLE_DIALOG_TAG) {
-            Toast.makeText(this, "${event.dialogTag} onPositiveClickEvent", Toast.LENGTH_SHORT)
-                .show()
-        }
+    // from AlertEventListener
+    override fun onAlertPositiveClick(event: AlertEvent.PositiveButtonEvent) {
+        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onPositiveClick") }
     }
 }
 ```

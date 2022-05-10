@@ -7,10 +7,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Alert.defaultConfig {
-            dialogStyle = R.style.Theme_CustomAlertDialog
             headerLayoutResource = R.layout.dialog_header
             footerLayoutResource = R.layout.dialog_footer
-            dialogIsCancellable = false
         }
     }
 }

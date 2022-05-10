@@ -1,17 +1,21 @@
 package io.github.khoben.alertdialog
 
-import io.github.khoben.alertdialog.builder.SimpleBuilder
+import io.github.khoben.alertdialog.builder.AlertBuilder
+import io.github.khoben.alertdialog.param.AlertConfig
 
 object Alert {
 
-    private var defaultConfig: DialogConfig? = null
+    private var defaultConfig: AlertConfig? = null
 
-    fun defaultConfig(block: DialogConfig.() -> Unit) {
-        defaultConfig = DialogConfig().apply(block)
+    /**
+     * Init default config
+     */
+    fun defaultConfig(block: AlertConfig.() -> Unit) {
+        defaultConfig = AlertConfig().apply(block)
     }
 
     /**
      * Create alert dialog
      */
-    fun create() = SimpleBuilder(defaultConfig)
+    fun create() = AlertBuilder(defaultConfig)
 }

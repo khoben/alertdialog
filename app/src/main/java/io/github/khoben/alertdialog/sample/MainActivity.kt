@@ -4,56 +4,62 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import io.github.khoben.alertdialog.Alert
-import io.github.khoben.alertdialog.CustomDialogEventListener
-import io.github.khoben.alertdialog.LayoutAlign
-import io.github.khoben.alertdialog.event.DialogEvent
+import io.github.khoben.alertdialog.param.LayoutAlign
+import io.github.khoben.alertdialog.builder.alert
+import io.github.khoben.alertdialog.event.AlertEvent
+import io.github.khoben.alertdialog.event.AlertEventListener
 
-class MainActivity : AppCompatActivity(R.layout.activity_main), CustomDialogEventListener {
+class MainActivity : AppCompatActivity(R.layout.activity_main), AlertEventListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         findViewById<Button>(R.id.simple_dialog).setOnClickListener {
-            Alert.create()
-                .title("Hi")
-                .message("How do you do?")
-                .messageAlignment(LayoutAlign.CENTER)
-                .titleAlignment(LayoutAlign.CENTER)
-                .buttonsCentered()
-                .show(this)
+            alert {
+                title {
+                    text("Hi")
+                    alignment(LayoutAlign.CENTER)
+                }
+                message {
+                    text("How do you do?")
+                    alignment(LayoutAlign.CENTER)
+                }
+                controlsAlignCenter(true)
+                cancellable(false)
+            }
         }
         findViewById<Button>(R.id.custom_dialog).setOnClickListener {
-            Alert.create()
-                .title("Hi")
-                .message("How do you do?")
-                .withButtonCallback(dialogTag = SAMPLE_DIALOG_TAG)
-                .positiveButton("Yes")
-                .neutralButton("Cancel")
-                .negativeButton("No")
-                .titleAlignment(LayoutAlign.RIGHT)
-                .messageAlignment(LayoutAlign.RIGHT)
-                .show(this)
+            alert {
+                title {
+                    text("Hi")
+                    alignment(LayoutAlign.RIGHT)
+                }
+                message {
+                    text("How do you do?")
+                    alignment(LayoutAlign.RIGHT)
+                }
+                controlsAlignCenter(true)
+                buttonCallback(callbackTag = SAMPLE_DIALOG_TAG) {
+                    positiveButton("Yes")
+                    neutralButton("Cancel")
+                    negativeButton("No")
+                }
+            }
         }
     }
 
-    override fun onNegativeClickEvent(event: DialogEvent.NegativeButtonEvent) {
-        event.doIfTagMatches(SAMPLE_DIALOG_TAG) {
-            Toast.makeText(this, "${event.dialogTag} onNegativeClickEvent", Toast.LENGTH_SHORT)
-                .show()
-        }
+    override fun onAlertNegativeClick(event: AlertEvent.NegativeButtonEvent) {
+        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onNegativeClick") }
     }
 
-    override fun onNeutralClickEvent(event: DialogEvent.NeutralButtonEvent) {
-        event.doIfTagMatches(SAMPLE_DIALOG_TAG) {
-            Toast.makeText(this, "${event.dialogTag} onNeutralClickEvent", Toast.LENGTH_SHORT)
-                .show()
-        }
+    override fun onAlertNeutralClick(event: AlertEvent.NeutralButtonEvent) {
+        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onNeutralClick") }
     }
 
-    override fun onPositiveClickEvent(event: DialogEvent.PositiveButtonEvent) {
-        event.doIfTagMatches(SAMPLE_DIALOG_TAG) {
-            Toast.makeText(this, "${event.dialogTag} onPositiveClickEvent", Toast.LENGTH_SHORT)
-                .show()
-        }
+    override fun onAlertPositiveClick(event: AlertEvent.PositiveButtonEvent) {
+        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onPositiveClick") }
+    }
+
+    private fun showToast(message: CharSequence) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
