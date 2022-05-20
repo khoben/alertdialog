@@ -1,21 +1,23 @@
 package io.github.khoben.alertdialog.type
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.view.*
+import android.view.ContextThemeWrapper
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View.*
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.Space
-import android.widget.TextView
+import android.view.ViewGroup
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AlertDialogLayout
 import androidx.appcompat.widget.DialogTitle
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.github.khoben.alertdialog.R
 import io.github.khoben.alertdialog.param.LayoutAlign
 
@@ -30,7 +32,7 @@ abstract class BaseAlertDialog : DialogFragment() {
     /**
      * Alert dialog style
      */
-    protected var dialogStyle: Int = 0
+    private var dialogStyle: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,25 +42,53 @@ abstract class BaseAlertDialog : DialogFragment() {
         }
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return onCreateAlert(
+            savedInstanceState,
+            MaterialAlertDialogBuilder(requireContext(), dialogStyle)
+                .setView(createAlertView())
+        )
+    }
+
+    abstract fun onCreateAlert(
+        savedInstanceState: Bundle?,
+        alertBuilder: MaterialAlertDialogBuilder
+    ): Dialog
+
     /**
      * Create dialog view with custom layout
      *
      * Should be called at [DialogFragment.onCreateDialog]
      */
     @SuppressLint("PrivateResource", "InflateParams")
-    protected fun createAlertView(): ViewGroup {
+    private fun createAlertView(): ViewGroup {
         // Getting default material dialog layout
         val themedInflater = LayoutInflater.from(ContextThemeWrapper(context, dialogStyle))
+
         val layout = themedInflater.inflate(
             com.google.android.material.R.layout.mtrl_alert_dialog,
             null,
             false
         ) as AlertDialogLayout
-        // Remove android:id="@+id/customPanel"
-        layout.findViewById<View>(com.google.android.material.R.id.customPanel)
-            ?.visibility = GONE
 
         arguments?.run {
+
+            val customLayoutRes = getInt(EXTRA_CUSTOM_LAYOUT, -1)
+            if (customLayoutRes == -1) {
+                // Remove android:id="@+id/customPanel"
+                layout.findViewById<FrameLayout>(com.google.android.material.R.id.customPanel)
+                    ?.visibility = GONE
+            } else {
+                layout.findViewById<FrameLayout>(com.google.android.material.R.id.customPanel)
+                    ?.addView(
+                        themedInflater.inflate(
+                            customLayoutRes,
+                            null,
+                            false
+                        )
+                    )
+            }
+
             getInt(EXTRA_HEADER_LAYOUT_RES, -1).let {
                 if (it != -1) {
                     layout.addView(themedInflater.inflate(it, null, false), 0)
@@ -161,5 +191,6 @@ abstract class BaseAlertDialog : DialogFragment() {
         const val EXTRA_MESSAGE_ALIGN = "extra_message_align"
 
         const val EXTRA_DIALOG_STYLE = "extra_dialog_style"
+        const val EXTRA_CUSTOM_LAYOUT = "extra_custom_layout"
     }
 }

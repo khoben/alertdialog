@@ -21,5 +21,6 @@ data class AlertConfig(
     var callbackTag: String? = null,
     var positiveText: String? = null,
     var negativeText: String? = null,
-    var neutralText: String? = null
+    var neutralText: String? = null,
+    @LayoutRes var customLayout: Int? = null
 )

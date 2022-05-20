@@ -2,10 +2,10 @@ package io.github.khoben.alertdialog.builder
 
 import androidx.annotation.LayoutRes
 import androidx.annotation.StyleRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import io.github.khoben.alertdialog.param.AlertConfig
 import io.github.khoben.alertdialog.type.BaseAlertDialog
@@ -84,14 +84,23 @@ class AlertBuilder internal constructor(defaultConfig: AlertConfig? = null) {
      *  @param callbackTag Alert dialog callback tag
      */
     fun buttonCallback(callbackTag: String, block: ButtonCallbackBuilder.() -> Unit) = apply {
-        ButtonCallbackBuilder(config, callbackTag).apply(block)
+        ButtonCallbackBuilder(callbackTag, config).apply(block)
         return this
+    }
+
+    /**
+     * Setup custom view for alert
+     *
+     * @param layoutRes Custom view layout res id
+     */
+    fun customView(@LayoutRes layoutRes: Int) = apply {
+        config.customLayout = layoutRes
     }
 
     /**
      * Build & show alert dialog
      */
-    fun show(activity: AppCompatActivity) = showInternal(activity.supportFragmentManager)
+    fun show(activity: FragmentActivity) = showInternal(activity.supportFragmentManager)
 
     /**
      * Build & show alert dialog
@@ -112,7 +121,8 @@ class AlertBuilder internal constructor(defaultConfig: AlertConfig? = null) {
             BaseAlertDialog.EXTRA_CANCELLABLE to config.dialogIsCancellable,
             BaseAlertDialog.EXTRA_CONTROLS_ALIGN_CENTER to config.dialogControlsAlignCenter,
             BaseAlertDialog.EXTRA_TITLE_ALIGN to config.dialogTitleAlign,
-            BaseAlertDialog.EXTRA_MESSAGE_ALIGN to config.dialogMessageAlign
+            BaseAlertDialog.EXTRA_MESSAGE_ALIGN to config.dialogMessageAlign,
+            BaseAlertDialog.EXTRA_CUSTOM_LAYOUT to config.customLayout
         )
 
         return if (config.callbackTag != null) {

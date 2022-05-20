@@ -1,6 +1,7 @@
 package io.github.khoben.alertdialog.sample
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import io.github.khoben.alertdialog.event.AlertEvent
 import io.github.khoben.alertdialog.event.AlertEventListener
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), AlertEventListener {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         findViewById<Button>(R.id.simple_dialog).setOnClickListener {
@@ -44,18 +46,35 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), AlertEventListen
                 }
             }
         }
+        findViewById<Button>(R.id.custom_view_dialog).setOnClickListener {
+            alert {
+                title {
+                    text("Custom view")
+                    alignment(LayoutAlign.CENTER)
+                }
+                message {
+                    text("Message")
+                    alignment(LayoutAlign.CENTER)
+                }
+                customView(R.layout.activity_main)
+            }
+        }
     }
 
-    override fun onAlertNegativeClick(event: AlertEvent.NegativeButtonEvent) {
-        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onNegativeClick") }
-    }
-
-    override fun onAlertNeutralClick(event: AlertEvent.NeutralButtonEvent) {
-        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onNeutralClick") }
-    }
-
-    override fun onAlertPositiveClick(event: AlertEvent.PositiveButtonEvent) {
-        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onPositiveClick") }
+    override fun onAlertEvent(event: AlertEvent) {
+        event.doIfMatches(SAMPLE_DIALOG_TAG) {
+            when(event) {
+                is AlertEvent.Negative -> {
+                    showToast("Negative via ${event.callbackTag}")
+                }
+                is AlertEvent.Neutral -> {
+                    showToast("Neutral via ${event.callbackTag}")
+                }
+                is AlertEvent.Positive -> {
+                    showToast("Positive via ${event.callbackTag}")
+                }
+            }
+        }
     }
 
     private fun showToast(message: CharSequence) {

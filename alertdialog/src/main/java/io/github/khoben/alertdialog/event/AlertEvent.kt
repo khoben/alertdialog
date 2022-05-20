@@ -1,15 +1,15 @@
 package io.github.khoben.alertdialog.event
 
-sealed class AlertEvent(val dialogTag: String) {
-    class PositiveButtonEvent(dialogTag: String) : AlertEvent(dialogTag)
-    class NegativeButtonEvent(dialogTag: String) : AlertEvent(dialogTag)
-    class NeutralButtonEvent(dialogTag: String) : AlertEvent(dialogTag)
+sealed class AlertEvent(val callbackTag: String) {
+    class Positive(callbackTag: String) : AlertEvent(callbackTag)
+    class Negative(callbackTag: String) : AlertEvent(callbackTag)
+    class Neutral(callbackTag: String) : AlertEvent(callbackTag)
 
     /**
      * Run [block] if tags match
      */
     inline fun doIfMatches(expectedTag: String, crossinline block: () -> Unit) {
-        if (dialogTag == expectedTag) {
+        if (callbackTag == expectedTag) {
             block()
         }
     }

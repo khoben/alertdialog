@@ -1,7 +1,7 @@
 package io.github.khoben.alertdialog.builder
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import io.github.khoben.alertdialog.Alert
 
 /**
@@ -16,6 +16,6 @@ inline fun Fragment.alert(crossinline block: AlertBuilder.() -> Unit) {
  * Build and show alert dialog
  */
 @AlertDslMarker
-inline fun AppCompatActivity.alert(crossinline block: AlertBuilder.() -> Unit) {
+inline fun FragmentActivity.alert(crossinline block: AlertBuilder.() -> Unit) {
     Alert.create().apply(block).show(this)
 }

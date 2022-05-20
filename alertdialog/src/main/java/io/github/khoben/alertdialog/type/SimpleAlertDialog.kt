@@ -11,12 +11,14 @@ class SimpleAlertDialog : BaseAlertDialog() {
 
     override val fragmentDialogTag get() = TAG
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateAlert(
+        savedInstanceState: Bundle?,
+        alertBuilder: MaterialAlertDialogBuilder
+    ): Dialog {
         val title = arguments?.getCharSequence(EXTRA_TITLE, null)
         val message = arguments?.getCharSequence(EXTRA_MESSAGE, null)
 
-        return MaterialAlertDialogBuilder(requireContext(), dialogStyle)
-            .setView(createAlertView())
+        return alertBuilder
             .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
                 dismissAllowingStateLoss()
             }
