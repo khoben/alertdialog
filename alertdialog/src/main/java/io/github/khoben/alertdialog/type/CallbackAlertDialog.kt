@@ -18,8 +18,10 @@ class CallbackAlertDialog : BaseAlertDialog() {
 
     private var listener: AlertEventListener = AlertEventListener.NOOP
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
+    override fun onCreateAlert(
+        savedInstanceState: Bundle?,
+        alertBuilder: MaterialAlertDialogBuilder
+    ): Dialog {
         val callbackTag = arguments?.getString(EXTRA_CALLBACK_TAG, null) ?: fragmentDialogTag
 
         val title = arguments?.getCharSequence(EXTRA_TITLE, null)
@@ -29,31 +31,28 @@ class CallbackAlertDialog : BaseAlertDialog() {
         val negativeText = arguments?.getString(EXTRA_NEGATIVE_TEXT, null)
         val neutralText = arguments?.getString(EXTRA_NEUTRAL_TEXT, null)
 
-        return MaterialAlertDialogBuilder(requireContext(), dialogStyle)
-            .setView(createAlertView())
-            .apply {
-                title?.let { setTitle(it) }
-                message?.let { setMessage(it) }
-                positiveText?.let { text ->
-                    setPositiveButton(text) { _, _ ->
-                        listener.onAlertPositiveClick(AlertEvent.PositiveButtonEvent(callbackTag))
-                        dismissAllowingStateLoss()
-                    }
-                }
-                negativeText?.let { text ->
-                    setNegativeButton(text) { _, _ ->
-                        listener.onAlertNegativeClick(AlertEvent.NegativeButtonEvent(callbackTag))
-                        dismissAllowingStateLoss()
-                    }
-                }
-                neutralText?.let { text ->
-                    setNeutralButton(text) { _, _ ->
-                        listener.onAlertNeutralClick(AlertEvent.NeutralButtonEvent(callbackTag))
-                        dismissAllowingStateLoss()
-                    }
+        return alertBuilder.apply {
+            title?.let { setTitle(it) }
+            message?.let { setMessage(it) }
+            positiveText?.let { text ->
+                setPositiveButton(text) { _, _ ->
+                    listener.onAlertEvent(AlertEvent.Positive(callbackTag))
+                    dismissAllowingStateLoss()
                 }
             }
-            .create()
+            negativeText?.let { text ->
+                setNegativeButton(text) { _, _ ->
+                    listener.onAlertEvent(AlertEvent.Negative(callbackTag))
+                    dismissAllowingStateLoss()
+                }
+            }
+            neutralText?.let { text ->
+                setNeutralButton(text) { _, _ ->
+                    listener.onAlertEvent(AlertEvent.Neutral(callbackTag))
+                    dismissAllowingStateLoss()
+                }
+            }
+        }.create()
     }
 
     override fun onAttach(context: Context) {

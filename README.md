@@ -1,6 +1,6 @@
 ## AlertDialog - Customizable alert dialog with retained callback actions
 
-#### [Sample app](app/src/main/java/io/github/khoben/alertdialog/sample/MainActivity.kt)
+#### [Sa### [Sample app (apk)](https://github.com/khoben/alertdialog/releases/latest/download/sample.apk)
 
 ### Usage
 #### Setup alert dialog config (optional)
