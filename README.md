@@ -1,6 +1,6 @@
 ## AlertDialog - Customizable alert dialog with retained callback actions
 
-#### [Sa### [Sample app (apk)](https://github.com/khoben/alertdialog/releases/latest/download/sample.apk)
+#### [Sample app (apk)](https://github.com/khoben/alertdialog/releases/latest/download/sample.apk)
 
 ### Usage
 #### Setup alert dialog config (optional)
@@ -39,6 +39,7 @@ alert { // build and show alert
         neutralButton("Cancel")
         negativeButton("No")
     }
+    customView(R.layout.activity_main) // set custom view
     cancellable(false)
 }
 ```
@@ -63,18 +64,20 @@ AlertEventListener {
     ...
 
     // from AlertEventListener
-    override fun onAlertNegativeClick(event: AlertEvent.NegativeButtonEvent) {
-        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onNegativeClick") }
-    }
-
-    // from AlertEventListener
-    override fun onAlertNeutralClick(event: AlertEvent.NeutralButtonEvent) {
-        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onNeutralClick") }
-    }
-
-    // from AlertEventListener
-    override fun onAlertPositiveClick(event: AlertEvent.PositiveButtonEvent) {
-        event.doIfMatches(SAMPLE_DIALOG_TAG) { showToast("${event.dialogTag} onPositiveClick") }
+    override fun onAlertEvent(event: AlertEvent) {
+       event.doIfMatches(SAMPLE_DIALOG_TAG) {
+          when(event) {
+             is AlertEvent.Negative -> {
+                showToast("Negative via ${event.callbackTag}")
+             }
+             is AlertEvent.Neutral -> {
+                showToast("Neutral via ${event.callbackTag}")
+             }
+             is AlertEvent.Positive -> {
+                showToast("Positive via ${event.callbackTag}")
+             }
+          }
+       }
     }
 }
 ```
