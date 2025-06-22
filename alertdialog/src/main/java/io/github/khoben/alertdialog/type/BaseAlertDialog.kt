@@ -8,9 +8,16 @@ import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.TEXT_ALIGNMENT_CENTER
+import android.view.View.TEXT_ALIGNMENT_VIEW_END
+import android.view.View.TEXT_ALIGNMENT_VIEW_START
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.Space
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AlertDialogLayout
@@ -60,7 +67,7 @@ abstract class BaseAlertDialog : DialogFragment() {
      *
      * Should be called at [DialogFragment.onCreateDialog]
      */
-    @SuppressLint("PrivateResource", "InflateParams")
+    @SuppressLint("PrivateResource", "InflateParams", "RestrictedApi", "UseGetLayoutInflater")
     private fun createAlertView(): ViewGroup {
         // Getting default material dialog layout
         val themedInflater = LayoutInflater.from(ContextThemeWrapper(context, dialogStyle))
@@ -112,13 +119,19 @@ abstract class BaseAlertDialog : DialogFragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private fun setMessageAlign(alertDialogLayout: AlertDialogLayout, @LayoutAlign align: Int) {
+    private fun setMessageAlign(
+        @SuppressLint("RestrictedApi") alertDialogLayout: AlertDialogLayout,
+        @LayoutAlign align: Int
+    ) {
         alertDialogLayout.findViewById<TextView>(android.R.id.message)
             ?.textAlignment = alignment(align)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private fun setTitleAlign(alertDialogLayout: AlertDialogLayout, @LayoutAlign align: Int) {
+    private fun setTitleAlign(
+        @SuppressLint("RestrictedApi") alertDialogLayout: AlertDialogLayout,
+        @LayoutAlign align: Int
+    ) {
         alertDialogLayout.findViewById<DialogTitle>(com.google.android.material.R.id.alertTitle)
             ?.let {
                 if (align != LayoutAlign.LEFT &&
@@ -144,7 +157,7 @@ abstract class BaseAlertDialog : DialogFragment() {
         }
     }
 
-    private fun alignControlsCenter(alertDialogLayout: AlertDialogLayout) {
+    private fun alignControlsCenter(@SuppressLint("RestrictedApi") alertDialogLayout: AlertDialogLayout) {
         getButtonLayout(alertDialogLayout)?.let {
             it.gravity = Gravity.CENTER_HORIZONTAL
             // remove spacer between neutral and negative button
@@ -166,7 +179,10 @@ abstract class BaseAlertDialog : DialogFragment() {
         }
         val a = context.obtainStyledAttributes(intArrayOf(R.attr.alertStyle))
         val resolvedStyle =
-            a.getResourceId(0, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog)
+            a.getResourceId(
+                0,
+                com.google.android.material.R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog
+            )
         a.recycle()
         return resolvedStyle
     }
